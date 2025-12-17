@@ -1,33 +1,26 @@
-CFLAGS = -c -Wall
 CC = gcc
-LIBS =  -lm 
+CFLAGS = -Wall -Wextra -g
 
-all: parser
+TARGET = lab3
 
-parser: main.o parser.o scanner.o reader.o charcode.o token.o error.o
-	${CC} main.o parser.o scanner.o reader.o charcode.o token.o error.o -o parser
+SRCS = \
+	main.c \
+	reader.c \
+	scanner.c \
+	parser.c \
+	token.c \
+	charcode.c \
+	error.c \
+	symtab.c \
+	semantics.c
 
-main.o: main.c
-	${CC} ${CFLAGS} main.c
+OBJS = $(SRCS:.c=.o)
 
-scanner.o: scanner.c
-	${CC} ${CFLAGS} scanner.c
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-parser.o: parser.c
-	${CC} ${CFLAGS} parser.c
-
-reader.o: reader.c
-	${CC} ${CFLAGS} reader.c
-
-charcode.o: charcode.c
-	${CC} ${CFLAGS} charcode.c
-
-token.o: token.c
-	${CC} ${CFLAGS} token.c
-
-error.o: error.c
-	${CC} ${CFLAGS} error.c
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f *.o *~
-
+	rm -f $(OBJS) $(TARGET)
